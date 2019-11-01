@@ -1,0 +1,61 @@
+public int lengthOfLongestSubstring(String s)
+{
+    char[] strs = s.toCharArray();
+    int[] isValid = new int[95];
+    int result = 0;
+    int max = 0;
+    for (int i = 0; i < strs.length; i++)
+    {
+        if (isValid[strs[i] - ' '] != 0)
+        {
+            result = max > result ? max : result;
+            for (int j = i - max; j < isValid[strs[i] - ' ']; j++)
+            {
+                max--;
+                isValid[strs[j] - ' '] = 0;
+            }
+        }
+        max++;
+        isValid[strs[i] - ' '] = i + 1;
+    }
+    return max > result ? max : result;
+}
+下一篇：0 ms , 在所有 C 提交中击败了 100.00% 的用户
+int lengthOfLongestSubstring(char *s) {
+    char *pos[256] = {0,};
+
+    void unset(char *begin, char *end) {
+        for (char *p = begin; p<end; p++) {
+            pos[*p] = 0;
+        }
+    }
+
+    char *begin = s;
+    int maxn = 0;
+    int n = 0;
+    char *p = NULL;
+
+    while (*s) {
+        if (pos[*s]) {
+            n = s - begin;
+            if (n > maxn) {
+                maxn = n;
+            }
+            p = pos[*s];
+            unset(begin, p+1);
+            begin = p+1;
+        }
+        pos[*s] = s;
+        s++;
+    }
+    n = s - begin;
+    if (n > maxn) {
+        maxn = n;
+    }
+    return maxn;
+}
+
+作者：nyttb
+链接：https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/0-ms-zai-suo-you-c-ti-jiao-zhong-ji-bai-liao-10000/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
